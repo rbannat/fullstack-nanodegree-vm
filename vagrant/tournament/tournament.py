@@ -121,6 +121,7 @@ def swiss_pairings():
     standings = c.fetchall()
     db.close()
 
+    # create pairing by adding every pair of two
     pairings = [(standings[i][0], standings[i][0], standings[i+1][0], standings[i+1][1]) for i in range(0, len(standings), 2)]
 
     return pairings
