@@ -10,17 +10,17 @@ CREATE DATABASE tournament;
 
 \c tournament;
 
+DROP TABLE IF EXISTS players CASCADE;
+CREATE TABLE players (
+    id serial primary key,
+    name varchar(40) NOT NULL
+);
+
 DROP TABLE IF EXISTS matches CASCADE;
 CREATE TABLE matches (
     id serial primary key,
     winner integer references players(id),
     loser integer references players(id)
-);
-
-DROP TABLE IF EXISTS players CASCADE;
-CREATE TABLE players (
-    id serial primary key,
-    name varchar(40) NOT NULL
 );
 
 CREATE VIEW standings AS
