@@ -115,4 +115,14 @@ def swiss_pairings():
         name2: the second player's name
     """
 
+    db = connect()
+    c = db.cursor()
+    c.execute("SELECT id, name FROM standings ORDER BY wins DESC;")
+    standings = c.fetchall()
+    db.close()
+
+    pairings = [(standings[i][0], standings[i][0], standings[i+1][0], standings[i+1][1]) for i in range(0, len(standings), 2)]
+
+    return pairings
+
 
