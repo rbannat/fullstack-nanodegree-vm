@@ -1,7 +1,7 @@
 {% extends "main.html" %}
 {% block content %}
 {% include "header.html" %}
-    <div class="row">
+<div class="row">
     <div class="col-md-4">
         <h2>Categories</h2>
         {% for category in categories %}
@@ -18,9 +18,9 @@
 
         {% for item in items%}
         <a href="{{url_for('showItem', item_id = item.id)}}">
-                <div class="restaurant-list">
-                    <h3>{{item.name}} ({{item.category.name}})</h3>
-                </div>
+            <div class="restaurant-list">
+                <h3>{{item.name}} ({{item.category.name}})</h3>
+            </div>
         </a>
         {% endfor %}
     </div>
