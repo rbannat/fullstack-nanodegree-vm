@@ -175,12 +175,13 @@ def gdisconnect():
         response.headers['Content-Type'] = 'application/json'
         return response
 
-@app.route('/category/<int:category_id>/items/JSON')
-def categoryItemJSON(cateogry_id):
-    category = session.query(Category).filter_by(id=category_id).one()
-    items = session.query(Item).filter_by(
-        category_id=category_id).all()
-    return jsonify(Items=[i.serialize for i in items])
+
+@app.route('/catalog.json')
+def categoryItemJSON():
+    categories = session.query(Category)
+    items = session.query(Item)
+
+    return jsonify(Category=[i.serialize for i in categories])
 
 
 @app.route('/category/<int:category_id>/item/<int:item_id>/JSON')
@@ -373,6 +374,7 @@ def disconnect():
     else:
         flash("You were not logged in")
         return redirect(url_for('showCategories'))
+
 
 if __name__ == '__main__':
     app.secret_key = 'super_secret_key'
