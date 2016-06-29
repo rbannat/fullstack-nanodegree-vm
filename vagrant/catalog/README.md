@@ -9,3 +9,7 @@ Udacity FSND Tournament Results
 - create database by running `python database_setup.py`
 - prefill database by running `python lotsofcategories.py`
 - run `project.py`
+
+# JSON Endpoints
+/categories/JSON
+/items/JSON
