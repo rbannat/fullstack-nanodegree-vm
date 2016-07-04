@@ -1,4 +1,4 @@
-Udacity FSND Tournament Results
+Udacity FSND Catalog Project
 =============
 
 - install vagrant
