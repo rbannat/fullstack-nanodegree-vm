@@ -13,6 +13,8 @@ class User(Base):
     name = Column(String(250), nullable=False)
     email = Column(String(250), nullable=False)
     picture = Column(String(250))
+    items = relationship("Item", cascade="save-update, merge, delete")
+    categories = relationship("Category", cascade="save-update, merge, delete")
 
 
 class Category(Base):
@@ -21,6 +23,8 @@ class Category(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(250), nullable=False)
     items = relationship("Item", cascade="save-update, merge, delete")
+    user_id = Column(Integer, ForeignKey('user.id'))
+    user = relationship(User)
 
     @property
     def serialize(self):
@@ -49,6 +53,7 @@ class Item(Base):
             'name': self.name,
             'description': self.description,
             'id': self.id,
+            'user_id': self.user_id
         }
 
 

@@ -18,33 +18,33 @@ DBSession = sessionmaker(bind=engine)
 # session.rollback()
 session = DBSession()
 
-session.query(User).delete()
+session.query(Item).delete()
 session.commit()
 
 session.query(Category).delete()
 session.commit()
 
-session.query(Item).delete()
+session.query(User).delete()
 session.commit()
 
 # Create dummy user
-User1 = User(name="Robo Barista", email="tinnyTim@udacity.com",
+user1 = User(name="Robo Barista", email="tinnyTim@udacity.com",
              picture='https://pbs.twimg.com/profile_images/2671170543/18debd694829ed78203a5a36dd364160_400x400.png')
-session.add(User1)
+session.add(user1)
 session.commit()
 
 # categories
-category1 = Category(name="Soccer")
+category1 = Category(name="Soccer", user_id=1)
 
 session.add(category1)
 session.commit()
 
-category2 = Category(name="Snowboard")
+category2 = Category(name="Snowboard", user_id=1)
 
 session.add(category2)
 session.commit()
 
-category3 = Category(name="Swimming")
+category3 = Category(name="Swimming", user_id=1)
 
 session.add(category3)
 session.commit()

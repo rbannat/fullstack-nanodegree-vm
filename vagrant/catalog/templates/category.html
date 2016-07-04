@@ -14,6 +14,9 @@
         {% endfor %}
     </div>
     <div class="col-md-8">
+        <h1>{{category.name}}</h1>
+         <a href="{{url_for('editCategory', category_id = category.id ) }}">Edit category</a> |
+            <a href="{{url_for('deleteCategory', category_id = category.id ) }}">Delete category</a>
         <h2>Items</h2>
 
         {% for item in items%}

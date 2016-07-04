@@ -230,7 +230,7 @@ def newCategory():
         return redirect('/login')
     if request.method == 'POST':
         newCategory = Category(
-            name=request.form['name'])
+            name=request.form['name'], user_id=login_session['user_id'])
         session.add(newCategory)
         flash('New Category %s Successfully Created' % newCategory.name)
         session.commit()
@@ -247,6 +247,8 @@ def editCategory(category_id):
         Category).filter_by(id=category_id).one()
     if 'username' not in login_session:
         return redirect('/login')
+    if login_session['user_id'] != editedCategory.user_id:
+        return "<script>function myFunction() {alert('You are not authorized to edit items to this category. Please create your own category in order to edit items.');}</script><body onload='myFunction()''>"
     if request.method == 'POST':
         if request.form['name']:
             editedCategory.name = request.form['name']
@@ -264,6 +266,8 @@ def deleteCategory(category_id):
         Category).filter_by(id=category_id).one()
     if 'username' not in login_session:
         return redirect('/login')
+    if login_session['user_id'] != categoryToDelete.user_id:
+        return "<script>function myFunction() {alert('You are not authorized to edit items to this category. Please create your own category in order to edit items.');}</script><body onload='myFunction()''>"
     if request.method == 'POST':
         session.delete(categoryToDelete)
         flash('%s Successfully Deleted' % categoryToDelete.name)
@@ -282,10 +286,12 @@ def showCategory(category_id):
     category = session.query(Category).filter_by(id=category_id).one()
     items = session.query(Item).filter_by(
         category_id=category_id).all()
-    if 'username' not in login_session:
-        return render_template('publiccategory.html', items=items, categories=categories, category=category)
+    creator = getUserInfo(category.user_id)
+    if 'username' not in login_session or creator.id != login_session['user_id']:
+        return render_template('publiccategory.html', items=items, creator=creator, categories=categories,
+                               category=category)
     else:
-        return render_template('category.html', items=items, categories=categories, category=category)
+        return render_template('category.html', items=items, creator=creator, categories=categories, category=category)
 
 
 @app.route('/items/<int:item_id>/')
@@ -302,7 +308,7 @@ def showItem(item_id):
 
 @app.route('/item/new/', methods=['GET', 'POST'])
 def newItem():
-    """# Create a new item."""
+    """ Create a new item."""
 
     if 'username' not in login_session:
         return redirect('/login')
@@ -313,7 +319,6 @@ def newItem():
         session.add(newItem)
         session.commit()
         flash('New Menu %s Item Successfully Created' % (newItem.name))
-        categories = session.query(Category).order_by(asc(Category.name))
         return redirect(url_for('showCategory', category_id=newItem.category.id))
     else:
         return render_template('newitem.html', categories=categories)
