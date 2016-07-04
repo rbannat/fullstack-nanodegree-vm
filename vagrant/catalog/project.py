@@ -230,11 +230,11 @@ def newCategory():
         return redirect('/login')
     if request.method == 'POST':
         newCategory = Category(
-            name=request.form['name'], user_id=login_session['user_id'])
+            name=request.form['name'])
         session.add(newCategory)
         flash('New Category %s Successfully Created' % newCategory.name)
         session.commit()
-        return redirect(url_for('showCategorys'))
+        return redirect(url_for('showCategories'))
     else:
         return render_template('newCategory.html')
 
@@ -247,13 +247,11 @@ def editCategory(category_id):
         Category).filter_by(id=category_id).one()
     if 'username' not in login_session:
         return redirect('/login')
-    if editedCategory.user_id != login_session['user_id']:
-        return "<script>function myFunction() {alert('You are not authorized to edit this category. Please create your own category in order to edit.');}</script><body onload='myFunction()''>"
     if request.method == 'POST':
         if request.form['name']:
             editedCategory.name = request.form['name']
             flash('Category Successfully Edited %s' % editedCategory.name)
-            return redirect(url_for('showCategorys'))
+            return redirect(url_for('showCategories'))
     else:
         return render_template('editCategory.html', category=editedCategory)
 
@@ -266,13 +264,11 @@ def deleteCategory(category_id):
         Category).filter_by(id=category_id).one()
     if 'username' not in login_session:
         return redirect('/login')
-    if categoryToDelete.user_id != login_session['user_id']:
-        return "<script>function myFunction() {alert('You are not authorized to delete this category. Please create your own category in order to delete.');}</script><body onload='myFunction()''>"
     if request.method == 'POST':
         session.delete(categoryToDelete)
         flash('%s Successfully Deleted' % categoryToDelete.name)
         session.commit()
-        return redirect(url_for('showCategorys', category_id=category_id))
+        return redirect(url_for('showCategories', category_id=category_id))
     else:
         return render_template('deleteCategory.html', category=categoryToDelete)
 
